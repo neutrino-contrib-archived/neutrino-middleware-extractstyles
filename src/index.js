@@ -16,6 +16,10 @@ module.exports = (neutrino, options = {}) => {
   // rule that may exist (present if using the default neutrino-preset-web).
   neutrino.config.module.rules.delete('style')
 
+  options.extractText = Object.assign({
+    filename: options.filename || '[name].css',
+  }, options.extractText)
+
   const styleRule = neutrino.config.module
     .rule('style')
     .test(options.test || /\.css$/)
@@ -31,5 +35,5 @@ module.exports = (neutrino, options = {}) => {
   )
 
   neutrino.config.plugin('extract')
-    .use(ExtractTextPlugin, [options.filename || '[name].css'])
+    .use(ExtractTextPlugin, [options.extractText])
 }
