@@ -12,22 +12,21 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
  * -------------------------------------------------------------------------- */
 
 module.exports = (neutrino, options = {}) => {
+  const { loaderOptions = {}, pluginOptions = {} } = options
+  const styleRule = neutrino.config.module
+    .rule('style')
+    .test(loaderOptions.test || /\.css$/)
+
+  const loaders = ExtractTextPlugin.extract({
+    fallback: loaderOptions.fallback || 'style-loader',
+    use: loaderOptions.use || 'css-loader'
+  })
+
   // We want to start from a clean slate. This removes any existing "style"
   // rule that may exist (present if using the default neutrino-preset-web).
   neutrino.config.module.rules.delete('style')
 
-  options.extractText = Object.assign({
-    filename: options.filename || '[name].css',
-  }, options.extractText)
-
-  const styleRule = neutrino.config.module
-    .rule('style')
-    .test(options.test || /\.css$/)
-
-  const loaders = ExtractTextPlugin.extract({
-    fallback: options.fallback || 'style-loader',
-    use: options.use || 'css-loader'
-  })
+  pluginOptions.filename = pluginOptions.filename || '[name].css'
 
   loaders.forEach(({ loader, options }) => styleRule.use(loader)
     .loader(loader)
@@ -35,5 +34,5 @@ module.exports = (neutrino, options = {}) => {
   )
 
   neutrino.config.plugin('extract')
-    .use(ExtractTextPlugin, [options.extractText])
+    .use(ExtractTextPlugin, [pluginOptions])
 }
