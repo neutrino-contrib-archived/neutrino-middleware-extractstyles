@@ -17,10 +17,10 @@ module.exports = (neutrino, options = {}) => {
     .rule('style')
     .test(loaderOptions.test || /\.css$/)
 
-  const loaders = ExtractTextPlugin.extract({
-    fallback: loaderOptions.fallback || 'style-loader',
-    use: loaderOptions.use || 'css-loader'
-  })
+  const loaders = ExtractTextPlugin.extract(Object.assign({
+    fallback: 'style-loader',
+    use: 'css-loader'
+  }, loaderOptions))
 
   // We want to start from a clean slate. This removes any existing "style"
   // rule that may exist (present if using the default neutrino-preset-web).
