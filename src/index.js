@@ -26,13 +26,11 @@ module.exports = (neutrino, options = {}) => {
   // rule that may exist (present if using the default neutrino-preset-web).
   neutrino.config.module.rules.delete('style')
 
-  pluginOptions.filename = pluginOptions.filename || '[name].css'
-
   loaders.forEach(({ loader, options }) => styleRule.use(loader)
     .loader(loader)
     .options(options)
   )
 
   neutrino.config.plugin('extract')
-    .use(ExtractTextPlugin, [pluginOptions])
+    .use(ExtractTextPlugin, [Object.assign({ filename: '[name].css' }, pluginOptions)])
 }
