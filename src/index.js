@@ -16,7 +16,7 @@ module.exports = (neutrino, options = {}) => {
   // rule that may exist (present if using the default neutrino-preset-web).
   neutrino.config.module.rules.delete('style')
 
-  const { loaderOptions = {}, pluginOptions = {} } = options
+  const { loaderOptions = {}, pluginOptions = {}, cssHotLoaderOptions = {} } = options
   const styleRule = neutrino.config.module
     .rule('style')
     .test(loaderOptions.test || /\.css$/)
@@ -25,6 +25,11 @@ module.exports = (neutrino, options = {}) => {
     fallback: 'style-loader',
     use: 'css-loader'
   }, loaderOptions))
+
+  // css-hot-loader must be first
+  styleRule.use('css-hot-loader')
+    .loader('css-hot-loader')
+    .options(cssHotLoaderOptions)
 
   loaders.forEach(({ loader, options }) => styleRule.use(loader)
     .loader(loader)
