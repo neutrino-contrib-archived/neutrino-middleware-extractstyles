@@ -1,3 +1,7 @@
+Moved to: [neutrino-contrib/neutrino-middleware-extractstyles](https://github.com/jaridmargolin/neutrino-contrib/tree/master/packages/neutrino-middleware-extractstyles)
+
+---
+
 # Neutrino ExtractStyles Middleware
 [![NPM version][npm-image]][npm-url] [![NPM downloads][npm-downloads]][npm-url]
 
